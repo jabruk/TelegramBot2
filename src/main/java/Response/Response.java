@@ -1,5 +1,7 @@
-package kz.gru;
+package Response;
 
+import ReplyMarkupKeyboard.MainReplyMarkupKeyboard;
+import ReplyMarkupKeyboard.ReplyMarkupKeyboard;
 import com.google.gson.annotations.SerializedName;
 
 public class Response {

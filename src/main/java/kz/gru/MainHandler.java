@@ -1,18 +1,23 @@
 package kz.gru;
+import ReplyMarkupKeyboard.MainReplyMarkupKeyboard;
+import ReplyMarkupKeyboard.ReplyMarkupKeyboard;
+import Response.Response;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-
+import Buttons.Button;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Stack;
+import java.util.Map;
+import java.util.stream.Stream;
 
 
 // Handler value: example.HandlerStream
@@ -21,36 +26,40 @@ public class MainHandler implements RequestStreamHandler {
     @Override
     public void handleRequest(InputStream inputStream, OutputStream outputStream, Context context) throws IOException
     {
-
         LambdaLogger lambdaLogger = context.getLogger();
-
         InputStreamReader inputStreamReader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
         BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-
-
+        Map<String,String> map;
         JsonObject jsonObject = gson.fromJson(bufferedReader, JsonObject.class);
-
         JsonObject bodyJson = gson.fromJson( jsonObject.get("body").getAsString(), JsonObject.class);
+        ReplyMarkupKeyboard replyMarkupKeyboard =new MainReplyMarkupKeyboard();
+
+        map = byStream("TestContainer.txt");
+        lambdaLogger.log("MAP: " + map);// add body id in future
+
         int id;
         String text = "gde text";
-        if(bodyJson.has("message"))
-        {
+        if(bodyJson.has("message")) {
             JsonObject message = bodyJson.get("message").getAsJsonObject();
             id = message.get("chat").getAsJsonObject().get("id").getAsInt();
+            boolean hasIncomeText = message.has("text");
 
-            if(message.has("text"))
-            {
-                text = "Hi, you sent: " + message.get("text").getAsString();
+            if(hasIncomeText && message.get("text").getAsString().equals("/start")) {
+                text = "Вас приветствует БОТ путеводитель по г.Алматы. Выберите желаемую опцию";
             }
-        } else
-        {
+            else if(hasIncomeText) {
+                //text = "Hi, you sent: " + message.get("text").getAsString();
+                if(wasButtonPressed(message.get("text").getAsString(),replyMarkupKeyboard)) {
+
+                }else {
+                    replyMarkupKeyboard = new MainReplyMarkupKeyboard();
+                }
+            }
+        } else {
             lambdaLogger.log("LOG: chat ID not found");// add body id in future
             return;
         }
 
-
-
-        ReplyMarkupKeyboard replyMarkupKeyboard = new ReplyMarkupKeyboard(buttonsSet());
         Response response = Response
                 .responseBuilder()
                 .setText(text)
@@ -74,22 +83,29 @@ public class MainHandler implements RequestStreamHandler {
         outputStream.close();
     }
 
-
-
-
-
-
-
-    private List<List<Button>> buttonsSet() {
-        List<List<Button>> buttonsFirstRow = new ArrayList<>();
-
-        buttonsFirstRow.add(new ArrayList<>());
-        buttonsFirstRow.get(0).add(new Button("Поесть"));
-        buttonsFirstRow.get(0).add(new Button("Прогуляться"));
-
-        buttonsFirstRow.add(new ArrayList<>());
-        buttonsFirstRow.get(1).add(new Button("Повеселиться"));
-        buttonsFirstRow.get(1).add(new Button("Посетить"));
-        return buttonsFirstRow;
+    private boolean wasButtonPressed(String text, ReplyMarkupKeyboard replyMarkupKeyboard) {
+        Button hasButton = new Button(text);
+        for(List<Button> list : replyMarkupKeyboard.getKeyboard()) {
+            if(list.contains(hasButton)) return true;
+        }
+        return false;
     }
+
+    private static Map<String, String> byStream(String filePath) {
+        Map<String, String> map = new HashMap<>();
+        try (Stream<String> lines = Files.lines(Paths.get(filePath))) {
+            lines.filter(line -> line.contains(":"))
+                    .forEach(line -> {
+                        String[] keyValuePair = line.split(":", 2);
+                        String key = keyValuePair[0];
+                        String value = keyValuePair[1];
+                        map.put(key, value);
+
+                    });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return map;
+    }
+
 }

@@ -1,4 +1,4 @@
-package kz.gru;
+package Buttons;
 
 import java.util.List;
 
