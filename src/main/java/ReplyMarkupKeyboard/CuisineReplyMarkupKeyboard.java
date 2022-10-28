@@ -16,6 +16,11 @@ public class CuisineReplyMarkupKeyboard implements ReplyMarkupKeyboard{
     }
 
     @Override
+    public String getText() {
+        return text;
+    }
+
+    @Override
     public List<List<Button>> keyBoardBuilder() {
         List<List<Button>> buttons = new ArrayList<>();
 

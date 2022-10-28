@@ -1,0 +1,2 @@
+Поесть:cuisine
+/start:main

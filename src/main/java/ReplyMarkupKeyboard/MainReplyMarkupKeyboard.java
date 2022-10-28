@@ -11,9 +11,14 @@ public class MainReplyMarkupKeyboard implements ReplyMarkupKeyboard{
     private List<List<Button>> keyboard;
 
     public MainReplyMarkupKeyboard() {
-        text = "main";
+        text = "Вас приветствует БОТ путеводитель по г.Алматы. Выберите желаемую опцию";
         this.keyboard = keyBoardBuilder();
     }
+    @Override
+    public String getText() {
+        return text;
+    }
+
     @Override
     public List<List<Button>> getKeyboard() {
         return keyboard;

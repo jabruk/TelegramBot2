@@ -1,6 +1,7 @@
 package kz.gru;
 import ReplyMarkupKeyboard.MainReplyMarkupKeyboard;
 import ReplyMarkupKeyboard.ReplyMarkupKeyboard;
+import ReplyMarkupKeyboard.DetermineKeyBoard;
 import Response.Response;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
@@ -17,6 +18,7 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import java.util.stream.Stream;
 
 
@@ -24,15 +26,14 @@ import java.util.stream.Stream;
 public class MainHandler implements RequestStreamHandler {
     Gson gson = new GsonBuilder().setPrettyPrinting().create();
     @Override
-    public void handleRequest(InputStream inputStream, OutputStream outputStream, Context context) throws IOException
-    {
+    public void handleRequest(InputStream inputStream, OutputStream outputStream, Context context) throws IOException {
         LambdaLogger lambdaLogger = context.getLogger();
         InputStreamReader inputStreamReader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
         BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
         Map<String,String> map;
         JsonObject jsonObject = gson.fromJson(bufferedReader, JsonObject.class);
         JsonObject bodyJson = gson.fromJson( jsonObject.get("body").getAsString(), JsonObject.class);
-        ReplyMarkupKeyboard replyMarkupKeyboard =new MainReplyMarkupKeyboard();
+        ReplyMarkupKeyboard replyMarkupKeyboard = null;
 
         map = byStream("TestContainer.txt");
         lambdaLogger.log("MAP: " + map);// add body id in future
@@ -43,17 +44,9 @@ public class MainHandler implements RequestStreamHandler {
             JsonObject message = bodyJson.get("message").getAsJsonObject();
             id = message.get("chat").getAsJsonObject().get("id").getAsInt();
             boolean hasIncomeText = message.has("text");
-
-            if(hasIncomeText && message.get("text").getAsString().equals("/start")) {
-                text = "Вас приветствует БОТ путеводитель по г.Алматы. Выберите желаемую опцию";
-            }
-            else if(hasIncomeText) {
-                //text = "Hi, you sent: " + message.get("text").getAsString();
-                if(wasButtonPressed(message.get("text").getAsString(),replyMarkupKeyboard)) {
-
-                }else {
-                    replyMarkupKeyboard = new MainReplyMarkupKeyboard();
-                }
+            if(hasIncomeText) {
+                replyMarkupKeyboard = DetermineKeyBoard.findKeyboard(map,message.get("text").getAsString());
+                text = replyMarkupKeyboard.getText();
             }
         } else {
             lambdaLogger.log("LOG: chat ID not found");// add body id in future
