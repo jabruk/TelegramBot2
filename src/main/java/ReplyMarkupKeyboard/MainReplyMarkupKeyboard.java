@@ -7,15 +7,17 @@ import java.util.List;
 
 public class MainReplyMarkupKeyboard implements ReplyMarkupKeyboard{
 
-    private String text;
+    private final String text;
     private List<List<Button>> keyboard;
 
     public MainReplyMarkupKeyboard() {
+        text = "Вас приветствует БОТ путеводитель по г.Алматы. Выберите желаемую опцию";
+
     }
 
-    public MainReplyMarkupKeyboard(List<String> listOfButtonsName) {
+    public MainReplyMarkupKeyboard(List<List<Button>> listOfButtonsName) {
         text = "Вас приветствует БОТ путеводитель по г.Алматы. Выберите желаемую опцию";
-        this.keyboard = Button.createButtonList(listOfButtonsName);
+        this.keyboard = listOfButtonsName;
     }
     @Override
     public String getText() {

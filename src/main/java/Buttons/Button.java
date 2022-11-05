@@ -23,11 +23,14 @@ public class Button {
     public static List<List<Button>> createButtonList(List<String> list) {
         List<List<Button>> resultButtonList = new ArrayList<>();
         if(list.size() <= maxAllowedButtons) {
-            for (int row = 0; row < 2; row++) {
-                resultButtonList.add(new ArrayList<>());
-                for (String nameOfButton : list) {
-                    resultButtonList.get(row).add(new Button(nameOfButton));
+            int row = 0,indexOfRow = -1;
+            for (String nameOfButton : list) {
+                if(row % 2 == 0) {
+                    resultButtonList.add(new ArrayList<>());
+                    indexOfRow++;
                 }
+                resultButtonList.get(indexOfRow).add(new Button(nameOfButton));
+                row++;
             }
         }
         return resultButtonList;
