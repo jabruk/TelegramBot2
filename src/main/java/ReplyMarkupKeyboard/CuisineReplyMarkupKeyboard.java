@@ -2,7 +2,6 @@ package ReplyMarkupKeyboard;
 
 import Buttons.Button;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class CuisineReplyMarkupKeyboard implements ReplyMarkupKeyboard{
@@ -11,8 +10,11 @@ public class CuisineReplyMarkupKeyboard implements ReplyMarkupKeyboard{
     private List<List<Button>> keyboard;
 
     public CuisineReplyMarkupKeyboard() {
+    }
+
+    public CuisineReplyMarkupKeyboard(List<List<Button>> listOfButtonsName) {
         this.text = "cuisine";
-        this.keyboard = keyBoardBuilder();
+        this.keyboard = listOfButtonsName;
     }
 
     @Override
@@ -21,18 +23,20 @@ public class CuisineReplyMarkupKeyboard implements ReplyMarkupKeyboard{
     }
 
     @Override
-    public List<List<Button>> keyBoardBuilder() {
-        List<List<Button>> buttons = new ArrayList<>();
-
-        buttons.add(new ArrayList<>());
-        buttons.get(0).add(new Button("По кухне"));
-        buttons.get(0).add(new Button("По популярности места"));
-
-        return buttons;
-    }
-
-    @Override
     public List<List<Button>> getKeyboard() {
         return keyboard;
     }
+
+//    @Override
+//    public List<List<Button>> keyBoardBuilder(List<String> list) {
+//        List<List<Button>> buttons = new ArrayList<>();
+//
+//        buttons.add(new ArrayList<>());
+//        buttons.get(0).add(new Button("По кухне"));
+//        buttons.get(0).add(new Button("По популярности места"));
+//
+//        return buttons;
+//    }
+
+
 }

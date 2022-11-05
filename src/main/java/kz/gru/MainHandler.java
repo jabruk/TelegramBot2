@@ -1,5 +1,4 @@
 package kz.gru;
-import ReplyMarkupKeyboard.MainReplyMarkupKeyboard;
 import ReplyMarkupKeyboard.ReplyMarkupKeyboard;
 import ReplyMarkupKeyboard.DetermineKeyBoard;
 import Response.Response;
@@ -21,6 +20,8 @@ import java.util.Map;
 
 import java.util.stream.Stream;
 
+import static java.util.stream.Collectors.*;
+
 
 // Handler value: example.HandlerStream
 public class MainHandler implements RequestStreamHandler {
@@ -30,13 +31,16 @@ public class MainHandler implements RequestStreamHandler {
         LambdaLogger lambdaLogger = context.getLogger();
         InputStreamReader inputStreamReader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
         BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-        Map<String,String> map;
+        Map<String,String> mapKeyboards;
+        Map<String,List<String>> mapButtons;
         JsonObject jsonObject = gson.fromJson(bufferedReader, JsonObject.class);
         JsonObject bodyJson = gson.fromJson( jsonObject.get("body").getAsString(), JsonObject.class);
         ReplyMarkupKeyboard replyMarkupKeyboard = null;
 
-        map = byStream("TestContainer.txt");
-        lambdaLogger.log("MAP: " + map);// add body id in future
+        mapKeyboards = getKeyboardsByTextFromTextFile("TestContainer.txt");
+        mapButtons = getButtonsNameFromTextFile("ButtonList.txt");
+
+        lambdaLogger.log("MAP: " + mapKeyboards);// add body id in future
 
         int id;
         String text = "gde text";
@@ -45,7 +49,7 @@ public class MainHandler implements RequestStreamHandler {
             id = message.get("chat").getAsJsonObject().get("id").getAsInt();
             boolean hasIncomeText = message.has("text");
             if(hasIncomeText) {
-                replyMarkupKeyboard = DetermineKeyBoard.findKeyboard(map,message.get("text").getAsString());
+                replyMarkupKeyboard = DetermineKeyBoard.findKeyboard(mapKeyboards, mapButtons, message.get("text").getAsString());
                 text = replyMarkupKeyboard.getText();
             }
         } else {
@@ -84,7 +88,7 @@ public class MainHandler implements RequestStreamHandler {
         return false;
     }
 
-    private static Map<String, String> byStream(String filePath) {
+    private static Map<String, String> getKeyboardsByTextFromTextFile(String filePath) {
         Map<String, String> map = new HashMap<>();
         try (Stream<String> lines = Files.lines(Paths.get(filePath))) {
             lines.filter(line -> line.contains(":"))
@@ -99,6 +103,18 @@ public class MainHandler implements RequestStreamHandler {
             e.printStackTrace();
         }
         return map;
+    }
+
+    private static Map<String, List<String>> getButtonsNameFromTextFile(String file) throws IOException {
+        return Files.readAllLines(Paths.get(file)).stream()
+                .map(line -> line.split(":"))
+                .collect(
+                        groupingBy(
+                                array -> array[0].trim(),
+                                mapping(array -> array[1].trim(),
+                                        toList())
+                        )
+                );
     }
 
 }
