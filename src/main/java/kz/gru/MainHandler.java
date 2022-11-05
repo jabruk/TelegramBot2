@@ -41,7 +41,6 @@ public class MainHandler implements RequestStreamHandler {
         mapButtons = getButtonsNameFromTextFile("ButtonList.txt");
 
         lambdaLogger.log("MAP: " + mapKeyboards);// add body id in future
-
         int id;
         String text = "gde text";
         if(bodyJson.has("message")) {
