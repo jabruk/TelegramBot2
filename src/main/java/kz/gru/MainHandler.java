@@ -1,4 +1,6 @@
 package kz.gru;
+import ReplyMarkupKeyboard.Cuisine.Cuisine;
+import ReplyMarkupKeyboard.Cuisine.CuisineReplyMarkupKeyboard;
 import ReplyMarkupKeyboard.ReplyMarkupKeyboard;
 import ReplyMarkupKeyboard.DetermineKeyBoard;
 import Response.Response;
