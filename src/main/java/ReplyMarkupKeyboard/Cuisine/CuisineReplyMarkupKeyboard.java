@@ -9,22 +9,17 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class CuisineReplyMarkupKeyboard extends AbstractCuisineMarkupKeyboard {
+public class CuisineReplyMarkupKeyboard implements ReplyMarkupKeyboard {
 
     private String text;
     private List<List<Button>> keyboard;
-    private List<Cuisine> inline_keyboard;
     private final String pathFile = "CuisineList.txt";
 
 
-    public CuisineReplyMarkupKeyboard() {
-        super("cuisine");
-    }
+    public CuisineReplyMarkupKeyboard() {}
 
     public CuisineReplyMarkupKeyboard(List<List<Button>> listOfButtonsName) throws IOException {
-        super("cuisine");
         this.keyboard = listOfButtonsName;
-        this.inline_keyboard = creatCuisineList();
     }
 
     @Override

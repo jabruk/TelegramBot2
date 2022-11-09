@@ -136,4 +136,7 @@ public class MainHandler implements RequestStreamHandler {
         return response;
     }
 
+    public static void main(String[] args) {
+
+    }
 }
