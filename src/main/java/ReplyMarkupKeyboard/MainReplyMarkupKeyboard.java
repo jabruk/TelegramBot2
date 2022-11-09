@@ -7,12 +7,17 @@ import java.util.List;
 
 public class MainReplyMarkupKeyboard implements ReplyMarkupKeyboard{
 
-    private String text;
+    private final String text;
     private List<List<Button>> keyboard;
 
     public MainReplyMarkupKeyboard() {
         text = "Вас приветствует БОТ путеводитель по г.Алматы. Выберите желаемую опцию";
-        this.keyboard = keyBoardBuilder();
+
+    }
+
+    public MainReplyMarkupKeyboard(List<List<Button>> listOfButtonsName) {
+        text = "Вас приветствует БОТ путеводитель по г.Алматы. Выберите желаемую опцию";
+        this.keyboard = listOfButtonsName;
     }
     @Override
     public String getText() {
@@ -25,17 +30,17 @@ public class MainReplyMarkupKeyboard implements ReplyMarkupKeyboard{
     }
 
 
-    @Override
-    public List<List<Button>> keyBoardBuilder() {
-        List<List<Button>> buttons = new ArrayList<>();
-
-        buttons.add(new ArrayList<>());
-        buttons.get(0).add(new Button("Поесть"));
-        buttons.get(0).add(new Button("Прогуляться"));
-
-        buttons.add(new ArrayList<>());
-        buttons.get(1).add(new Button("Повеселиться"));
-        buttons.get(1).add(new Button("Посетить"));
-        return buttons;
-    }
+//    @Override
+//    public List<List<Button>> keyBoardBuilder(List<String> list) {
+//        List<List<Button>> buttons = new ArrayList<>();
+//
+//        buttons.add(new ArrayList<>());
+//        buttons.get(0).add(new Button("Поесть"));
+//        buttons.get(0).add(new Button("Прогуляться"));
+//
+//        buttons.add(new ArrayList<>());
+//        buttons.get(1).add(new Button("Повеселиться"));
+//        buttons.get(1).add(new Button("Посетить"));
+//        return buttons;
+//    }
 }

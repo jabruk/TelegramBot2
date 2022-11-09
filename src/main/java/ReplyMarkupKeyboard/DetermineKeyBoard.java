@@ -1,18 +1,22 @@
 package ReplyMarkupKeyboard;
 
+import Buttons.Button;
+import ReplyMarkupKeyboard.Cuisine.CuisineReplyMarkupKeyboard;
+
+import java.util.List;
 import java.util.Map;
 
 public class DetermineKeyBoard {
-    public static ReplyMarkupKeyboard findKeyboard(Map<String,String> listOfKeyboards, String buttonsText){
-        if(listOfKeyboards.containsKey(buttonsText)) {
-            return FactoryKeyBoard.determineFactory(listOfKeyboards.get(buttonsText));
+    public static ReplyMarkupKeyboard findKeyboard(Map<String,String> listOfKeyboards, Map<String, List<String>> listOfButtonsName , String messageText){
+        if(listOfKeyboards.containsKey(messageText)) {
+            return FactoryKeyBoard.determineFactory(listOfKeyboards.get(messageText), listOfButtonsName);
         }
-        return new MainReplyMarkupKeyboard();
+        return new MainReplyMarkupKeyboard(Button.createButtonList(listOfButtonsName.get("main")));
     }
     private static class FactoryKeyBoard {
-        private static ReplyMarkupKeyboard determineFactory(String typeOfKeyboard) {
-            if (typeOfKeyboard.equals("cuisine")) return new CuisineReplyMarkupKeyboard();
-            else return new MainReplyMarkupKeyboard();
+        private static ReplyMarkupKeyboard determineFactory(String typeOfKeyboard, Map<String, List<String>> listOfButtonsName) {
+            if (typeOfKeyboard.equals("cuisine")) return new CuisineReplyMarkupKeyboard(Button.createButtonList(listOfButtonsName.get("cuisine")));
+            else return new MainReplyMarkupKeyboard(Button.createButtonList(listOfButtonsName.get("main")));
 
         }
     }
