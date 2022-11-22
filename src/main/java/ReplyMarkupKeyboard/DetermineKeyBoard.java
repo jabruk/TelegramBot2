@@ -12,13 +12,13 @@ public class DetermineKeyBoard {
         if(listOfKeyboards.containsKey(messageText)) {
             return FactoryKeyBoard.determineFactory(listOfKeyboards.get(messageText), listOfButtonsName);
         }
-        return new MainReplyMarkupKeyboard(Button.createButtonList(listOfButtonsName.get("main")));
+        return new MainReplyMarkupKeyboard(Button.createButtonList(listOfButtonsName.get("main"),2));
     }
     private static class FactoryKeyBoard {
         private static ReplyMarkupKeyboard determineFactory(String typeOfKeyboard, Map<String, List<String>> listOfButtonsName) throws IOException {
-            if (typeOfKeyboard.equals("cuisine")) return new CuisineReplyMarkupKeyboard(Button.createButtonList(listOfButtonsName.get("cuisine")));
-            else if (typeOfKeyboard.equals("cuisineList")) return new CuisineReplyMarkupKeyboard(Button.createButtonList(listOfButtonsName.get("cuisineList")));
-            else return new MainReplyMarkupKeyboard(Button.createButtonList(listOfButtonsName.get("main")));
+            if (typeOfKeyboard.equals("cuisine")) return new CuisineReplyMarkupKeyboard(Button.createButtonList(listOfButtonsName.get("cuisine"),2));
+            else if (typeOfKeyboard.equals("cuisineList")) return new CuisineReplyMarkupKeyboard(Button.createButtonList(listOfButtonsName.get("cuisineList"),1));
+            else return new MainReplyMarkupKeyboard(Button.createButtonList(listOfButtonsName.get("main"),2));
 
         }
     }

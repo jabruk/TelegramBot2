@@ -134,4 +134,11 @@ public class MainHandler implements RequestStreamHandler {
         lambdaLogger.log("RESPONSE: " + gson.toJson(response));
         return response;
     }
+
+//    public static void main(String[] args) throws IOException {
+//        Map<String,List<String>> mapButtons;
+//        mapButtons = getButtonsNameFromTextFile("C:\\Users\\Gurban\\IdeaProjects\\TelegramBot2\\src\\main\\resources\\ButtonList.txt");
+//        ReplyMarkupKeyboard ma = new CuisineReplyMarkupKeyboard(Button.createButtonList(mapButtons.get("cuisineList"),1));
+//        System.out.println(ma.getKeyboard());
+//    }
 }
