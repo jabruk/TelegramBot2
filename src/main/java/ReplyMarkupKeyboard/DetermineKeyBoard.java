@@ -1,7 +1,6 @@
 package ReplyMarkupKeyboard;
 
 import Buttons.Button;
-import ReplyMarkupKeyboard.Cuisine.CuisineReplyMarkupInlineKeyboard;
 import ReplyMarkupKeyboard.Cuisine.CuisineReplyMarkupKeyboard;
 
 import java.io.IOException;
@@ -18,7 +17,7 @@ public class DetermineKeyBoard {
     private static class FactoryKeyBoard {
         private static ReplyMarkupKeyboard determineFactory(String typeOfKeyboard, Map<String, List<String>> listOfButtonsName) throws IOException {
             if (typeOfKeyboard.equals("cuisine")) return new CuisineReplyMarkupKeyboard(Button.createButtonList(listOfButtonsName.get("cuisine")));
-            else if(typeOfKeyboard.equals("По кухне")) return new CuisineReplyMarkupInlineKeyboard();
+            else if (typeOfKeyboard.equals("cuisineList")) return new CuisineReplyMarkupKeyboard(Button.createButtonList(listOfButtonsName.get("cuisineList")));
             else return new MainReplyMarkupKeyboard(Button.createButtonList(listOfButtonsName.get("main")));
 
         }

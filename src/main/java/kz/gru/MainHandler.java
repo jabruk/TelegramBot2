@@ -1,5 +1,4 @@
 package kz.gru;
-import ReplyMarkupKeyboard.Cuisine.Cuisine;
 import ReplyMarkupKeyboard.Cuisine.CuisineReplyMarkupKeyboard;
 import ReplyMarkupKeyboard.ReplyMarkupKeyboard;
 import ReplyMarkupKeyboard.DetermineKeyBoard;
@@ -134,9 +133,5 @@ public class MainHandler implements RequestStreamHandler {
 
         lambdaLogger.log("RESPONSE: " + gson.toJson(response));
         return response;
-    }
-
-    public static void main(String[] args) {
-
     }
 }

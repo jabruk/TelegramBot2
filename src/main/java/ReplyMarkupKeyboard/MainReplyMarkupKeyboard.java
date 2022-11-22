@@ -5,42 +5,13 @@ import Buttons.Button;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainReplyMarkupKeyboard implements ReplyMarkupKeyboard{
-
-    private final String text;
-    private List<List<Button>> keyboard;
-
+public class MainReplyMarkupKeyboard extends ButtonsBuilder{
     public MainReplyMarkupKeyboard() {
-        text = "Вас приветствует БОТ путеводитель по г.Алматы. Выберите желаемую опцию";
+        super("Вас приветствует БОТ путеводитель по г.Алматы. Выберите желаемую опцию");
 
     }
 
     public MainReplyMarkupKeyboard(List<List<Button>> listOfButtonsName) {
-        text = "Вас приветствует БОТ путеводитель по г.Алматы. Выберите желаемую опцию";
-        this.keyboard = listOfButtonsName;
+        super(listOfButtonsName,"Вас приветствует БОТ путеводитель по г.Алматы. Выберите желаемую опцию");
     }
-    @Override
-    public String getText() {
-        return text;
-    }
-
-    @Override
-    public List<List<Button>> getKeyboard() {
-        return keyboard;
-    }
-
-
-//    @Override
-//    public List<List<Button>> keyBoardBuilder(List<String> list) {
-//        List<List<Button>> buttons = new ArrayList<>();
-//
-//        buttons.add(new ArrayList<>());
-//        buttons.get(0).add(new Button("Поесть"));
-//        buttons.get(0).add(new Button("Прогуляться"));
-//
-//        buttons.add(new ArrayList<>());
-//        buttons.get(1).add(new Button("Повеселиться"));
-//        buttons.get(1).add(new Button("Посетить"));
-//        return buttons;
-//    }
 }
